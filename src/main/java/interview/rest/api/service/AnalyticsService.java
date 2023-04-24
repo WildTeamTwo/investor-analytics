@@ -2,9 +2,9 @@ package interview.rest.api.service;
 
 import interview.rest.api.model.AnalyticsJob;
 import interview.rest.api.model.AnalyticsRequest;
+import interview.rest.api.model.AnalyticsResponse;
 import interview.rest.api.model.Workload;
 import interview.rest.api.model.WorkloadRequest;
-import interview.rest.api.model.AnalyticsResponse;
 import interview.rest.api.model.WorkloadResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;

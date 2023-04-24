@@ -1,8 +1,8 @@
 package interview.rest.api.controller;
 
-import interview.rest.api.service.AnalyticsService;
 import interview.rest.api.model.AnalyticsRequest;
 import interview.rest.api.model.AnalyticsResponse;
+import interview.rest.api.service.AnalyticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

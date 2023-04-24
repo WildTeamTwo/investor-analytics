@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.apache.commons.collections4.CollectionUtils.emptyIfNull;
@@ -29,7 +30,6 @@ public class WorkloadService {
                 .map( name -> new Workload(request.getId(), name, JobStatus.IN_QUEUE.toString()))
                 .collect(Collectors.toList());
         repository.saveAll(workloads);
-        jobA.start();
         return new WorkloadResponse(request.getId(),workloads);
     }
 
@@ -45,8 +45,10 @@ public class WorkloadService {
     public WorkloadResponse updateResults(String requestId, long workloadId, String result, String status) {
         Optional<Workload> workload = repository.findById(workloadId);
         if (workload.isPresent()) {
+            int tries = workload.get().getTries();
             workload.get().setStatus(status);
-            workload.get().setStatus(status);
+            workload.get().setResult(result);
+            workload.get().setTries(tries);
             repository.save(workload.get());
         }
         return new WorkloadResponse(requestId, Arrays.asList(workload.orElse(new Workload())));
@@ -56,4 +58,8 @@ public class WorkloadService {
         return new WorkloadResponse(requestId, workloads);
     }
 
+    public WorkloadResponse getWorkloadReadyForProcessing() {
+        List<Workload> workloads = repository.findByStatus("IN_QUEUE");
+        return new WorkloadResponse(UUID.randomUUID().toString(), workloads);
+    }
 }

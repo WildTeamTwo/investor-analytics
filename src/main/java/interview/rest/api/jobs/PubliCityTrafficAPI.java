@@ -28,7 +28,6 @@ public class PubliCityTrafficAPI {
     private static final String URL = "https://services1.arcgis.com/UWYHeuuJISiGmgXx/arcgis/rest/services/Parking_and_Moving_Citations__view/FeatureServer/2/query?where=1%3D1&outFields=*&outSR=4326&f=json";
 
     public String downloadParkingData() throws IOException, URISyntaxException {
-
         HttpClient client = HttpClientBuilder.create().build();
         HttpGet request = buildUrl(URL, "0", "1000", "importdate");
         HttpResponse response = client.execute(request);

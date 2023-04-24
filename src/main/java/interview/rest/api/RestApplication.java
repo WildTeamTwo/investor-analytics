@@ -10,16 +10,16 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 public class RestApplication {
+    @Value("${api.base.url}")
+    private String baseUrl;
 
     public static void main(String[] args) throws Exception {
         ApplicationContext context = SpringApplication.run(RestApplication.class, args);
     }
-    @Value("${api.base.url}")
-    private String baseUrl;
-
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplateBuilder().rootUri(baseUrl).build();
     }
+
 
 }

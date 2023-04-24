@@ -36,6 +36,11 @@ public class WorkloadController {
         return workloadService.getStatus(requestId);
     }
 
+    @GetMapping("/ready-workloads")
+    @ResponseBody
+    public WorkloadResponse getWorkloadReadyForProcessing(){
+        return workloadService.getWorkloadReadyForProcessing();
+    }
     @PutMapping("/status/{requestId}/{workloadId}/{status}")
     public WorkloadResponse updateStatus(@PathVariable String requestId, @PathVariable long workloadId, @PathVariable String status){
         return workloadService.updateStatus(requestId, workloadId, status);
@@ -48,7 +53,6 @@ public class WorkloadController {
 
     @PutMapping("/status/register-success/{requestId}/{workloadId}")
     public WorkloadResponse updateResultsSuccess(@PathVariable String requestId, @PathVariable long workloadId, @RequestBody String results){
-//        System.out.println(" PUT " + requestId + " " + workloadId + " " + results + "");
         return workloadService.updateResults(requestId, workloadId, results,"DONE");
     }
     @PutMapping("/status/register-fail/{requestId}/{workloadId}")

@@ -1,13 +1,14 @@
 package interview.rest.api.jobs;
 
-import interview.rest.api.model.Mock;
 import interview.rest.api.model.Workload;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @Component
 public class CityTrafficAnalyticsJob {
@@ -15,19 +16,53 @@ public class CityTrafficAnalyticsJob {
     private PubliCityTrafficAPI publiCityTrafficAPI;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private AwsSQS queueConsumer;
+    private static final int MAX_COUNT = 5;
+    private static final int MAX_EXCEPTION_COUNT = 3;
 
-    public void start() {
-        Workload workload = Mock.workload();
+    @Async
+    public void poll(){
+        try {
+            checkQueue();
+        } catch (Exception e){
+            System.out.println("Polling ends...");
+        }
+    }
+
+    private void checkQueue() throws InterruptedException {
+        int count = 0;
+        int exceptionCount = 0;
+        do {
+            System.out.println("City vehicle analytics job checking queue...");
+            count++;
+            try {
+                List<Workload> workloads = queueConsumer.consume("Report Name A");
+                System.out.println("Jobs in Queue " + workloads.size());
+                workloads.stream().limit(2).forEach(workload ->  start(workload));
+                Thread.sleep(10000);
+            } catch (InterruptedException e){
+                if (++exceptionCount > MAX_EXCEPTION_COUNT){
+                    throw e;
+                }
+            }
+        } while (count < MAX_COUNT );
+
+    }
+    private void start(Workload workload) {
         try {
             registerWorkloadIsStarted(workload);
             String analyticsResults = runAnalytics();
             persistWorkloadIsFinished(workload, analyticsResults);
         } catch (Exception e) {
             persistWorkloadHasFailed(workload, "FAILED");
-            System.err.println(e);
             System.err.println(e.getStackTrace());
         }
+        finally {
+            queueConsumer.remove(workload);
+        }
     }
+
 
     private void persistWorkloadSuccess(Workload workload) {
         String requestId = workload.getRequestId();
@@ -70,11 +105,11 @@ public class CityTrafficAnalyticsJob {
     }
 
     private String runAnalytics() throws IOException, URISyntaxException {
-        System.out.println("Analytics running...");
+        System.out.print("Analytics running...");
         String jsonResults = publiCityTrafficAPI.downloadParkingData();
-        previewData(jsonResults);
+        //previewData(jsonResults);
         sleep();
-        System.out.println("Analytics finished.");
+        System.out.println("Analytics finished.\n");
         return "Here are Analytics results: Latest Analytics reports gives you an A+ Investment Grade.";
     }
 

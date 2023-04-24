@@ -10,4 +10,5 @@ import java.util.List;
 public interface WorkloadRepository extends CrudRepository<Workload, Long> {
 
     List<Workload> findByRequestId(String requestId);
+    List<Workload> findByStatus(String status);
 }

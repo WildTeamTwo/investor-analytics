@@ -2,21 +2,14 @@
 
 package interview.rest.api.jobs;
 
-import interview.rest.api.model.Workload;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.List;
 
 @Component
 public class PublicPropertyAnalyticsJob {
 
-    private static final int MAX_COUNT = 5;
-    private static final int MAX_EXCEPTION_COUNT = 3;
+    private static final int MAX_COUNT = 1;
+    private static final int MAX_EXCEPTION_COUNT = 1;
 
     @Async
     public void poll(){

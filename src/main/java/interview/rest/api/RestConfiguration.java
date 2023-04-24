@@ -16,7 +16,6 @@ public class RestConfiguration {
     @Autowired
     private CityTrafficAnalyticsJob cityTrafficAnalyticsJob;
 
-
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup() throws InterruptedException {
         queueProducer.begin();

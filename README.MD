@@ -1,6 +1,9 @@
 
 #Sample Rest API for Interview Demo.
 
+#Design Diagram
+https://excalidraw.com/#json=Rqf40VFhdgnAa9DBa35lW,qAXsk4p3FiQVium7UvV1qQ
+
 #Purpose
 The Job API talks to the Workload API.  The workload API represents a series of analytics jobs (batch jobs) that have been started by the Analytics job.  For the purposes of the demo, imagine that the Job API is the API Gateway (public subnet) and the Workload API is on a private subnet because it performs expensive operations.
 
@@ -18,9 +21,9 @@ The Job's functions
 #Run instructions
 mvn spring-boot:run
 
-
 #Requirements
 * Spring Boot 2.7.x
+* Maven 3.*
 * MySQL 8
 * Java 11
 
@@ -88,4 +91,8 @@ curl --location 'http://localhost:8080/analytics/job' \
 
 
 ## Get's status of running job  (requestId is in the response of post request above. use here )
-curl --location 'http://localhost:8080/analytics/job/{requestId}' 
+curl --location 'http://localhost:8080/analytics/job/{requestId}'
+
+## improvements 
+* Rest Docs to document the purpose of each job in a easily displayable way
+* Make writes to the database Transacational. 

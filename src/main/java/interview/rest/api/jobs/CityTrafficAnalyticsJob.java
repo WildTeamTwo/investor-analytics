@@ -105,7 +105,7 @@ public class CityTrafficAnalyticsJob {
     }
 
     private String runAnalytics() throws IOException, URISyntaxException {
-        System.out.print("Analytics running...");
+        System.out.print("City Traffic Analytics running...");
         String jsonResults = publiCityTrafficAPI.downloadParkingData();
         //previewData(jsonResults);
         sleep();

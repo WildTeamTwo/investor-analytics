@@ -53,7 +53,7 @@ public class WorkloadController {
 
     @PutMapping("/status/register-success/{requestId}/{workloadId}")
     public WorkloadResponse updateResultsSuccess(@PathVariable String requestId, @PathVariable long workloadId, @RequestBody String results){
-        return workloadService.updateResults(requestId, workloadId, results,"DONE");
+        return workloadService.updateResults(requestId, workloadId, "Analytics Job gives Investment an A+ grade.", "DONE");
     }
     @PutMapping("/status/register-fail/{requestId}/{workloadId}")
     public WorkloadResponse updateResultsFail(@PathVariable String requestId, @PathVariable long workloadId, @RequestBody String results){
